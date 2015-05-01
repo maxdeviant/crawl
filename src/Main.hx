@@ -9,7 +9,7 @@ import entities.*;
 class Main extends luxe.Game {
 
     var player : Player;
-    var entities : Array<Enemy> = new Array();
+    var entities : Array<Entity> = new Array();
 
     override function ready() {
 

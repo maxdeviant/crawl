@@ -4,19 +4,16 @@ import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
 
-class Enemy {
-
-    public var health : Int = 100;
+class Entity {
 
     var sprite : Sprite;
-
     var size : Int = 32;
 
-    public function new(x, y) {
+    public function new(name, pos, color) {
 
         sprite = new Sprite({
             name: 'Enemy',
-            pos: new Vector(x, y),
+            pos: pos,
             color: new Color().rgb(0xe32636),
             size: new Vector(size, size)
         });
@@ -32,6 +29,10 @@ class Enemy {
     public function getSize() {
 
         return size;
+
+    }
+
+    public function collide(player: Player) {
 
     }
 

@@ -23,7 +23,7 @@ class Player {
 
     }
 
-    public function move(direction: Direction, entities: Array<Enemy>) {
+    public function move(direction: Direction, entities: Array<Entity>) {
 
         var lastX = sprite.pos.x;
         var lastY = sprite.pos.y;
@@ -38,18 +38,18 @@ class Player {
             sprite.pos.x += size;
         }
 
-        var colliding = collide(entities);
+        var collision = collide(entities);
 
-        if (colliding != null) {
+        if (collision != null) {
             sprite.pos.x = lastX;
             sprite.pos.y = lastY;
 
-            health -= 10;
+            collision.collide(this);
         }
 
     }
 
-    public function collide(entities: Array<Enemy>) {
+    public function collide(entities: Array<Entity>) {
 
         var playerX1, playerY1, playerX2, playerY2 : Float;
         var entityX1, entityY1, entityX2, entityY2 : Float;
@@ -72,6 +72,10 @@ class Player {
 
         return null;
 
+    }
+
+    public function damage(amount: Int) {
+        health -= amount;
     }
 
 }
