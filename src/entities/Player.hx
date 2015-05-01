@@ -9,7 +9,6 @@ class Player {
     public var health : Int = 100;
 
     var sprite : Sprite;
-
     var size : Int = 32;
 
     public function new(x, y) {
@@ -75,7 +74,17 @@ class Player {
     }
 
     public function damage(amount: Int) {
+
         health -= amount;
+
+        if (health < 1) {
+            die();
+        }
+
+    }
+
+    function die() {
+
     }
 
 }
