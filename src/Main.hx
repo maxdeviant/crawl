@@ -25,6 +25,8 @@ class Main extends luxe.Game {
         Luxe.input.bind_key('right', Key.right);
         Luxe.input.bind_key('right', Key.key_d);
 
+        Luxe.input.bind_key('character_sheet', Key.key_c);
+
         player = new Player(Luxe.screen.mid.x, Luxe.screen.mid.y);
         entities.push(new Enemy(Luxe.screen.mid.x + 64, Luxe.screen.mid.y));
 
@@ -50,10 +52,24 @@ class Main extends luxe.Game {
             player.move(Direction.Right, entities);
         }
 
+        if (Luxe.input.inputdown('character_sheet')) {
+            openCharacterSheet();
+        }
+
         var text = new Text({
             immediate: true,
             pos: new Vector(0, 0),
             text: 'HP: ' + player.health
+        });
+
+    }
+
+    function openCharacterSheet() {
+
+        var text = new Text({
+            immediate: true,
+            pos: new Vector(Luxe.screen.w / 3, Luxe.screen.mid.y - 10),
+            text: 'POW: ' + player.power
         });
 
     }
