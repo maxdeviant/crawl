@@ -3,6 +3,7 @@ package entities;
 import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
+import luxe.Text;
 
 class Player {
 
@@ -84,6 +85,12 @@ class Player {
     }
 
     function die() {
+
+        var message = new Text({
+            immediate: false,
+            pos: new Vector(Luxe.screen.w / 3, Luxe.screen.mid.y),
+            text: 'Oh dear, you are dead!'
+        });
 
     }
 
