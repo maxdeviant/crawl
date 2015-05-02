@@ -11,6 +11,8 @@ import entities.*;
 
 class Main extends luxe.Game {
 
+    var hud_batcher : Batcher;
+
     var map : Map;
 
     var player : Player;
@@ -28,14 +30,11 @@ class Main extends luxe.Game {
 
     override function ready() {
 
-        var hud_batcher : Batcher = new Batcher(Luxe.renderer, 'hud');
-
-        var hud_view = new Camera();
-
-        hud_batcher.view = hud_view;
-        hud_batcher.layer = 2;
-
-        Luxe.renderer.add_batch(hud_batcher);
+        hud_batcher = Luxe.renderer.create_batcher({
+            name: 'hud',
+            camera: new Camera(),
+            layer: 2
+        });
 
         Luxe.input.bind_key('up', Key.up);
         Luxe.input.bind_key('up', Key.key_w);
@@ -90,9 +89,12 @@ class Main extends luxe.Game {
 
         var text = new Text({
             immediate: true,
+            no_batcher_add: true,
             pos: new Vector(0, 0),
             text: 'HP: ' + player.health
         });
+
+        hud_batcher.add(text.geometry);
 
     }
 
@@ -100,6 +102,7 @@ class Main extends luxe.Game {
 
         var background = Luxe.draw.box({
             immediate: true,
+            batcher: hud_batcher,
             x: Luxe.screen.w / 10,
             y: Luxe.screen.h / 10,
             w: Luxe.screen.w - 2 * (Luxe.screen.w / 10),
@@ -109,9 +112,12 @@ class Main extends luxe.Game {
 
         var text = new Text({
             immediate: true,
+            no_batcher_add: true,
             pos: new Vector(Luxe.screen.w / 10 + 10, Luxe.screen.h / 10 + 10),
             text: 'POW: ' + player.power
         });
+
+        hud_batcher.add(text.geometry);
 
     }
 
