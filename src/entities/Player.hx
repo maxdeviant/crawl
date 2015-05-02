@@ -9,6 +9,7 @@ class Player extends Entity {
 
     public var health : Int = 100;
     public var power : Int = 10;
+    public var luck : Int = 0;
 
     public function new(x: Float, y: Float) {
 
@@ -26,7 +27,7 @@ class Player extends Entity {
 
     }
 
-    public function move(direction: Direction, entities: Array<Entity>) {
+    public function move(direction: Direction) {
 
         var lastX = sprite.pos.x;
         var lastY = sprite.pos.y;
@@ -41,7 +42,7 @@ class Player extends Entity {
             sprite.pos.x += size;
         }
 
-        var collision = isColliding(entities);
+        var collision = isColliding();
 
         if (collision != null) {
             sprite.pos.x = lastX;
@@ -58,10 +59,12 @@ class Player extends Entity {
 
     }
 
-    function isColliding(entities: Array<Entity>) {
+    function isColliding() {
 
         var playerX1, playerY1, playerX2, playerY2 : Float;
         var entityX1, entityY1, entityX2, entityY2 : Float;
+
+        var entities : Array<Entity> = World.getInstance().getEntities();
 
         for (entity in entities) {
             playerX1 = sprite.pos.x;

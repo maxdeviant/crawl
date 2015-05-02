@@ -42,6 +42,10 @@ class Enemy extends Entity {
 
     function die() {
 
+        sprite.destroy();
+
+        World.getInstance().unregister(this);
+
         log('This enemy has died');
 
     }

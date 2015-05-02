@@ -28,7 +28,8 @@ class Main extends luxe.Game {
         Luxe.input.bind_key('character_sheet', Key.key_c);
 
         player = new Player(Luxe.screen.mid.x, Luxe.screen.mid.y);
-        entities.push(new Enemy(Luxe.screen.mid.x + 64, Luxe.screen.mid.y));
+
+        World.getInstance().register(new Enemy(Luxe.screen.mid.x + 64, Luxe.screen.mid.y));
 
     }
 
@@ -43,13 +44,13 @@ class Main extends luxe.Game {
     override function update(dt: Float) {
 
         if (Luxe.input.inputpressed('up')) {
-            player.move(Direction.Up, entities);
+            player.move(Direction.Up);
         } else if (Luxe.input.inputpressed('down')) {
-            player.move(Direction.Down, entities);
+            player.move(Direction.Down);
         } else if (Luxe.input.inputpressed('left')) {
-            player.move(Direction.Left, entities);
+            player.move(Direction.Left);
         } else if (Luxe.input.inputpressed('right')) {
-            player.move(Direction.Right, entities);
+            player.move(Direction.Right);
         }
 
         if (Luxe.input.inputdown('character_sheet')) {
