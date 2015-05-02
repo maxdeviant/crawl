@@ -24,6 +24,7 @@ class Map {
 
         tile_batcher = Luxe.renderer.create_batcher({
             name: 'tile',
+            camera: Luxe.camera.view,
             layer: 0
         });
 

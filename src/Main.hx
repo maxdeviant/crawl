@@ -3,6 +3,8 @@ import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
 import luxe.Text;
+import phoenix.Batcher;
+import phoenix.Camera;
 
 import map.*;
 import entities.*;
@@ -26,6 +28,15 @@ class Main extends luxe.Game {
 
     override function ready() {
 
+        var hud_batcher : Batcher = new Batcher(Luxe.renderer, 'hud');
+
+        var hud_view = new Camera();
+
+        hud_batcher.view = hud_view;
+        hud_batcher.layer = 2;
+
+        Luxe.renderer.add_batch(hud_batcher);
+
         Luxe.input.bind_key('up', Key.up);
         Luxe.input.bind_key('up', Key.key_w);
 
@@ -46,6 +57,8 @@ class Main extends luxe.Game {
         map = new Map('assets/tileset.png', tile_count_x, tile_count_y);
 
         player = new Player(5, 5);
+
+        player.centerCamera();
 
         World.getInstance().register(new Enemy(10, 10));
 

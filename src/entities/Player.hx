@@ -42,14 +42,24 @@ class Player extends Entity {
             sprite.pos.x += size;
         }
 
+        centerCamera();
+
         var collision = isColliding();
 
         if (collision != null) {
             sprite.pos.x = lastX;
             sprite.pos.y = lastY;
 
+            centerCamera();
+
             collision.collide(this);
         }
+
+    }
+
+    public function centerCamera() {
+
+        Luxe.camera.pos = sprite.pos.clone().subtract(Luxe.screen.mid);
 
     }
 
@@ -59,7 +69,7 @@ class Player extends Entity {
 
     }
 
-    function isColliding() {
+    private function isColliding() {
 
         var playerX1, playerY1, playerX2, playerY2 : Float;
         var entityX1, entityY1, entityX2, entityY2 : Float;
@@ -86,7 +96,7 @@ class Player extends Entity {
 
     }
 
-    function die() {
+    private function die() {
 
         var message = new Text({
             immediate: false,
