@@ -59,7 +59,7 @@ class Player extends Entity {
 
     public function centerCamera() {
 
-        Luxe.camera.pos = sprite.pos.clone().subtract(Luxe.screen.mid);
+        Luxe.camera.focus(sprite.pos, 1);
 
     }
 
