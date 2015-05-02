@@ -66,9 +66,18 @@ class Main extends luxe.Game {
 
     function openCharacterSheet() {
 
+        var background = Luxe.draw.box({
+            immediate: true,
+            x: Luxe.screen.w / 10,
+            y: Luxe.screen.h / 10,
+            w: Luxe.screen.w - 2 * (Luxe.screen.w / 10),
+            h: Luxe.screen.h - 2 * (Luxe.screen.h / 10),
+            color: new Color().rgb(0x2e2e2e)
+        });
+
         var text = new Text({
             immediate: true,
-            pos: new Vector(Luxe.screen.w / 3, Luxe.screen.mid.y - 10),
+            pos: new Vector(Luxe.screen.w / 10 + 10, Luxe.screen.h / 10 + 10),
             text: 'POW: ' + player.power
         });
 
