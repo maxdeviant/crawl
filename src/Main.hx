@@ -84,8 +84,16 @@ class Main extends luxe.Game {
                     h: size
                 });
 
-                var tile_x = 0;
-                var tile_y = 0;
+                var tile_x : Int;
+                var tile_y : Int;
+
+                if (x == 0 || y == 0 || x == tile_count_x - 1 || y == tile_count_y - 1) {
+                    tile_x = 1;
+                    tile_y = 0;
+                } else {
+                    tile_x = 0;
+                    tile_y = 0;
+                }
 
                 geometry.quad_uv(quad, new Rectangle((tile_x * size), (tile_y * size), size, size));
 
