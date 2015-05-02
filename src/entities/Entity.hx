@@ -9,12 +9,12 @@ class Entity {
     var sprite : Sprite;
     var size : Int = 32;
 
-    public function new(name, pos, color) {
+    public function new(name: String, pos: Vector, color: Color) {
 
         sprite = new Sprite({
-            name: 'Enemy',
+            name: name,
             pos: pos,
-            color: new Color().rgb(0xe32636),
+            color: color,
             size: new Vector(size, size)
         });
 
@@ -33,6 +33,10 @@ class Entity {
     }
 
     public function collide(player: Player) {
+
+    }
+
+    public function damage(amount: Int) {
 
     }
 

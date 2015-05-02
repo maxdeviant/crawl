@@ -5,21 +5,24 @@ import luxe.Color;
 import luxe.Vector;
 import luxe.Text;
 
-class Player {
+class Player extends Entity {
 
     public var health : Int = 100;
+    public var power : Int = 10;
 
-    var sprite : Sprite;
-    var size : Int = 32;
+    public function new(x: Float, y: Float) {
 
-    public function new(x, y) {
+        super('Player', new Vector(x, y), new Color().rgb(0xf94b04));
 
-        sprite = new Sprite({
-            name: 'Player',
-            pos: new Vector(x, y),
-            color: new Color().rgb(0xf94b04),
-            size: new Vector(size, size)
-        });
+    }
+
+    override function damage(amount: Int) {
+
+        health -= amount;
+
+        if (health < 1) {
+            die();
+        }
 
     }
 
@@ -38,7 +41,7 @@ class Player {
             sprite.pos.x += size;
         }
 
-        var collision = collide(entities);
+        var collision = isColliding(entities);
 
         if (collision != null) {
             sprite.pos.x = lastX;
@@ -49,7 +52,13 @@ class Player {
 
     }
 
-    public function collide(entities: Array<Entity>) {
+    public function attack(target: Entity) {
+
+        target.damage(power);
+
+    }
+
+    function isColliding(entities: Array<Entity>) {
 
         var playerX1, playerY1, playerX2, playerY2 : Float;
         var entityX1, entityY1, entityX2, entityY2 : Float;
@@ -71,16 +80,6 @@ class Player {
         }
 
         return null;
-
-    }
-
-    public function damage(amount: Int) {
-
-        health -= amount;
-
-        if (health < 1) {
-            die();
-        }
 
     }
 
