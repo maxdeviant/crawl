@@ -9,11 +9,15 @@ class Entity {
     var sprite : Sprite;
     var size : Int = 32;
 
-    public function new(name: String, pos: Vector, color: Color) {
+    public function new(name: String, x: Int, y: Int, color: Color) {
+
+        var map_x = x * size;
+        var map_y = y * size;
 
         sprite = new Sprite({
+            centered: false,
             name: name,
-            pos: pos,
+            pos: new Vector(map_x, map_y),
             color: color,
             size: new Vector(size, size)
         });

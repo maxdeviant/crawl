@@ -10,9 +10,9 @@ class Enemy extends Entity {
     public var health : Int = 100;
     public var power : Int = 10;
 
-    public function new(x: Float, y: Float) {
+    public function new(x: Int, y: Int) {
 
-        super('Enemy', new Vector(x , y), new Color().rgb(0xe32636));
+        super('Enemy', x, y, new Color().rgb(0xe32636));
 
     }
 

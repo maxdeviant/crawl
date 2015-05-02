@@ -11,9 +11,9 @@ class Player extends Entity {
     public var power : Int = 10;
     public var luck : Int = 0;
 
-    public function new(x: Float, y: Float) {
+    public function new(x: Int, y: Int) {
 
-        super('Player', new Vector(x, y), new Color().rgb(0xf94b04));
+        super('Player', x, y, new Color().rgb(0xf94b04));
 
     }
 
