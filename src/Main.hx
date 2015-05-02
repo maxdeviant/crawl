@@ -2,29 +2,17 @@ import luxe.Input;
 import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
-import luxe.Rectangle;
 import luxe.Text;
-import phoenix.Batcher;
-import phoenix.geometry.QuadPackGeometry;
 
+import map.*;
 import entities.*;
-
-typedef MapTile = {
-    quad : Int,
-    tile_x: Int,
-    tile_y : Int
-};
 
 class Main extends luxe.Game {
 
-    var tile_batcher : Batcher;
-    var entity_batcher : Batcher;
+    var map : Map;
 
     var player : Player;
     var entities : Array<Entity> = new Array();
-
-    var geometry : QuadPackGeometry;
-    var map_tiles : Array<Array<MapTile>>;
 
     override function config(config: luxe.AppConfig) {
 
@@ -37,11 +25,6 @@ class Main extends luxe.Game {
     }
 
     override function ready() {
-
-        tile_batcher = Luxe.renderer.create_batcher({
-            name: 'background',
-            layer: 0
-        });
 
         Luxe.input.bind_key('up', Key.up);
         Luxe.input.bind_key('up', Key.key_w);
@@ -57,59 +40,14 @@ class Main extends luxe.Game {
 
         Luxe.input.bind_key('character_sheet', Key.key_c);
 
-        geometry = new QuadPackGeometry({
-            texture: Luxe.resources.texture('assets/tileset.png'),
-            batcher: tile_batcher
-        });
+        var tile_count_x = Std.int(Luxe.screen.w / 32);
+        var tile_count_y = Std.int(Luxe.screen.h / 32);
 
-        geometry.texture.filter_min = geometry.texture.filter_mag = phoenix.Texture.FilterType.nearest;
+        map = new Map('assets/tileset.png', tile_count_x, tile_count_y);
 
-        map_tiles = new Array<Array<MapTile>>();
+        player = new Player(5, 5);
 
-        var size = 32;
-        var tile_count_x = Std.int(Luxe.screen.w / size);
-        var tile_count_y = Std.int(Luxe.screen.h / size);
-
-        for (y in 0 ... tile_count_y) {
-            var row = new Array<MapTile>();
-
-            for (x in 0 ... tile_count_x) {
-                var map_x = x * size;
-                var map_y = y * size;
-
-                var quad = geometry.quad_add({
-                    x: map_x,
-                    y: map_y,
-                    w: size,
-                    h: size
-                });
-
-                var tile_x : Int;
-                var tile_y : Int;
-
-                if (x == 0 || y == 0 || x == tile_count_x - 1 || y == tile_count_y - 1) {
-                    tile_x = 1;
-                    tile_y = 0;
-                } else {
-                    tile_x = 0;
-                    tile_y = 0;
-                }
-
-                geometry.quad_uv(quad, new Rectangle((tile_x * size), (tile_y * size), size, size));
-
-                row.push({
-                    quad: quad,
-                    tile_x: tile_x,
-                    tile_y: tile_y
-                });
-            }
-
-            map_tiles.push(row);
-        }
-
-        player = new Player(0, 0);
-
-        World.getInstance().register(new Enemy(1, 1));
+        World.getInstance().register(new Enemy(10, 10));
 
     }
 
