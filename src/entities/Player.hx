@@ -14,7 +14,7 @@ class Player extends Entity {
 
     public var location : Location;
 
-    public var fov : Int = 10;
+    public var fov : Int = 5;
 
     public var health : Int = 100;
     public var power : Int = 10;
