@@ -90,7 +90,7 @@ class Player extends Entity {
 
     public function centerCamera() {
 
-        Luxe.camera.focus(sprite.pos, 1);
+        Luxe.camera.focus(sprite.pos, 0.0);
 
     }
 
