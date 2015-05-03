@@ -4,12 +4,6 @@ import luxe.Rectangle;
 import phoenix.Batcher;
 import phoenix.geometry.QuadPackGeometry;
 
-typedef Tile = {
-    quad : Int,
-    tile_x: Int,
-    tile_y : Int
-};
-
 class Map {
 
     private var tile_width : Int = 32;
@@ -60,22 +54,21 @@ class Map {
 
                 var tile_x : Int;
                 var tile_y : Int;
+                var solid : Bool;
 
                 if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
                     tile_x = 1;
                     tile_y = 0;
+                    solid = true;
                 } else {
                     tile_x = 0;
                     tile_y = 0;
+                    solid = false;
                 }
 
                 geometry.quad_uv(quad, new Rectangle((tile_x * tile_width), (tile_y * tile_height), tile_width, tile_height));
 
-                row.push({
-                    quad: quad,
-                    tile_x: tile_x,
-                    tile_y: tile_y
-                });
+                row.push(new Tile(quad, tile_x, tile_y, solid));
             }
 
             map_tiles.push(row);
