@@ -1,5 +1,6 @@
 package map;
 
+import luxe.Color;
 import luxe.Vector;
 import luxe.Rectangle;
 import phoenix.Batcher;
@@ -97,6 +98,24 @@ class Map {
 
     }
 
+    public function computeFOV(player_x: Int, player_y: Int, fov: Int) {
+
+        for (y in 0 ... tiles.length) {
+            for (x in 0 ... tiles[y].length) {
+                var distance = Math.sqrt(Math.pow((x - player_x), 2) + Math.pow((y - player_y), 2));
+
+                if (distance <= fov) {
+                    geometry.quad_color(tiles[y][x].quad_id, new Color(1, 1, 1));
+                } else {
+                    geometry.quad_color(tiles[y][x].quad_id, new Color(0.5, 0.5, 0.5));
+                }
+            }
+        }
+
+        geometry.dirty = true;
+
+    }
+
     private function generate(width: Int, height: Int) {
 
         var map_tiles = new Array<Array<Tile>>();
@@ -112,7 +131,8 @@ class Map {
                     x: map_x,
                     y: map_y,
                     w: TILE_WIDTH,
-                    h: TILE_HEIGHT
+                    h: TILE_HEIGHT,
+                    color: new Color(0.5, 0.5, 0.5)
                 });
 
                 var sheet_x : Int;
@@ -148,7 +168,8 @@ class Map {
                     x: map_x,
                     y: map_y,
                     w: TILE_WIDTH,
-                    h: TILE_HEIGHT
+                    h: TILE_HEIGHT,
+                    color: new Color(0.5, 0.5, 0.5)
                 });
 
                 var sheet_x = 0;
@@ -195,7 +216,8 @@ class Map {
                 x: map_x,
                 y: map_y,
                 w: TILE_WIDTH,
-                h: TILE_HEIGHT
+                h: TILE_HEIGHT,
+                color: new Color(0.5, 0.5, 0.5)
             });
 
             var sheet_x = 0;
@@ -224,7 +246,8 @@ class Map {
                 x: map_x,
                 y: map_y,
                 w: TILE_WIDTH,
-                h: TILE_HEIGHT
+                h: TILE_HEIGHT,
+                color: new Color(0.5, 0.5, 0.5)
             });
 
             var sheet_x = 0;
