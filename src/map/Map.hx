@@ -16,6 +16,10 @@ class Map {
     private var TILE_WIDTH : Int = 32;
     private var TILE_HEIGHT : Int = 32;
 
+    private var UNEXPLORED : Color = new Color(0.0, 0.0, 0.0);
+    private var EXPLORED : Color = new Color(0.5, 0.5, 0.5);
+    private var VISIBLE : Color = new Color(1.0, 1.0, 1.0);
+
     private var tile_batcher : Batcher;
     private var geometry : QuadPackGeometry;
 
@@ -109,11 +113,16 @@ class Map {
 
         for (y in 0 ... tiles.length) {
             for (x in 0 ... tiles[y].length) {
-                geometry.quad_color(tiles[y][x].quad_id, new Color(0.5, 0.5, 0.5));
+                if (tiles[y][x].isExplored()) {
+                    geometry.quad_color(tiles[y][x].quad_id, EXPLORED);
+                } else {
+                    geometry.quad_color(tiles[y][x].quad_id, UNEXPLORED);
+                }
             }
         }
 
-        geometry.quad_color(tiles[player_y][player_x].quad_id, new Color(1, 1, 1));
+        tiles[player_y][player_x].explore();
+        geometry.quad_color(tiles[player_y][player_x].quad_id, VISIBLE);
 
         for (octant in 0 ... 8) {
             castLight(player_x, player_y, 1, 1.0, 0.0, fov, multipliers[0][octant], multipliers[1][octant], multipliers[2][octant], multipliers[3][octant], 0);
@@ -154,7 +163,8 @@ class Map {
                     break;
                 } else {
                     if (dx * dx + dy * dy < radius_sq) {
-                        geometry.quad_color(tiles[my][mx].quad_id, new Color(1, 1, 1));
+                        tiles[my][mx].explore();
+                        geometry.quad_color(tiles[my][mx].quad_id, VISIBLE);
                     }
 
                     if (blocked) {
@@ -200,7 +210,7 @@ class Map {
                     y: map_y,
                     w: TILE_WIDTH,
                     h: TILE_HEIGHT,
-                    color: new Color(0.5, 0.5, 0.5)
+                    color: EXPLORED
                 });
 
                 var sheet_x : Int;
@@ -237,7 +247,7 @@ class Map {
                     y: map_y,
                     w: TILE_WIDTH,
                     h: TILE_HEIGHT,
-                    color: new Color(0.5, 0.5, 0.5)
+                    color: EXPLORED
                 });
 
                 var sheet_x = 0;
@@ -285,7 +295,7 @@ class Map {
                 y: map_y,
                 w: TILE_WIDTH,
                 h: TILE_HEIGHT,
-                color: new Color(0.5, 0.5, 0.5)
+                color: EXPLORED
             });
 
             var sheet_x = 0;
@@ -315,7 +325,7 @@ class Map {
                 y: map_y,
                 w: TILE_WIDTH,
                 h: TILE_HEIGHT,
-                color: new Color(0.5, 0.5, 0.5)
+                color: EXPLORED
             });
 
             var sheet_x = 0;
