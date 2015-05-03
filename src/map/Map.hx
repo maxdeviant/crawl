@@ -1,18 +1,26 @@
 package map;
 
+import luxe.Vector;
 import luxe.Rectangle;
 import phoenix.Batcher;
 import phoenix.geometry.QuadPackGeometry;
 
+typedef SpawnPoint = {
+    x: Int,
+    y: Int
+};
+
 class Map {
 
-    private var tile_width : Int = 32;
-    private var tile_height : Int = 32;
+    private var TILE_WIDTH : Int = 32;
+    private var TILE_HEIGHT : Int = 32;
 
     private var tile_batcher : Batcher;
     private var geometry : QuadPackGeometry;
 
     private var tiles : Array<Array<Tile>>;
+
+    private var player_spawn : SpawnPoint;
 
     public function new(spritesheet: String, width: Int, height: Int) {
 
@@ -32,6 +40,45 @@ class Map {
 
         tiles = generate(width, height);
 
+        var MAX_ROOMS = 25;
+        var MIN_ROOM_SIZE = 3;
+        var MAX_ROOM_SIZE = 12;
+
+        var rooms = new Array<Room>();
+
+        for (room in 0 ... MAX_ROOMS) {
+            var room_width = Math.floor(Math.random() * (MAX_ROOM_SIZE - MIN_ROOM_SIZE)) + MIN_ROOM_SIZE;
+            var room_height = Math.floor(Math.random() * (MAX_ROOM_SIZE - MIN_ROOM_SIZE)) + MIN_ROOM_SIZE;
+
+            var x = Math.floor(Math.random() * (width - room_width - 2) + 1);
+            var y = Math.floor(Math.random() * (height - room_height - 2) + 1);
+
+            var new_room = new Room(x, y, room_width, room_height);
+
+            var failed = false;
+
+            for (other_room in rooms) {
+                if (new_room.intersects(other_room)) {
+                    failed = true;
+                    break;
+                }
+            }
+
+            if (failed) {
+                continue;
+            }
+
+            createRoom(x, y, room_width, room_height);
+
+            if (room == 0) {
+                player_spawn = new_room.getCenter();
+            } else {
+
+            }
+
+            rooms.push(new_room);
+        }
+
     }
 
     public function getTile(x: Int, y: Int) {
@@ -44,6 +91,12 @@ class Map {
 
     }
 
+    public function getPlayerSpawn() {
+
+        return player_spawn;
+
+    }
+
     private function generate(width: Int, height: Int) {
 
         var map_tiles = new Array<Array<Tile>>();
@@ -52,39 +105,61 @@ class Map {
             var row = new Array<Tile>();
 
             for (x in 0 ... width) {
-                var map_x = x * tile_width;
-                var map_y = y * tile_height;
+                var map_x = x * TILE_WIDTH;
+                var map_y = y * TILE_HEIGHT;
 
                 var quad = geometry.quad_add({
                     x: map_x,
                     y: map_y,
-                    w: tile_width,
-                    h: tile_height
+                    w: TILE_WIDTH,
+                    h: TILE_HEIGHT
                 });
 
-                var tile_x : Int;
-                var tile_y : Int;
+                var sheet_x : Int;
+                var sheet_y : Int;
                 var solid : Bool;
 
-                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
-                    tile_x = 1;
-                    tile_y = 0;
-                    solid = true;
-                } else {
-                    tile_x = 0;
-                    tile_y = 0;
-                    solid = false;
-                }
+                sheet_x = 1;
+                sheet_y = 0;
+                solid = false;
 
-                geometry.quad_uv(quad, new Rectangle((tile_x * tile_width), (tile_y * tile_height), tile_width, tile_height));
+                geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
 
-                row.push(new Tile(quad, tile_x, tile_y, solid));
+                row.push(new Tile(quad, sheet_x, sheet_y, solid));
             }
 
             map_tiles.push(row);
         }
 
         return map_tiles;
+
+    }
+
+    private function createRoom(x1: Int, y1: Int, width: Int, height: Int) {
+
+        for (y in y1 ... y1 + height + 1) {
+            for (x in x1 ... x1 + width + 1) {
+                geometry.quad_remove(tiles[y][x].quad_id);
+
+                var map_x = x * TILE_WIDTH;
+                var map_y = y * TILE_HEIGHT;
+
+                var quad = geometry.quad_add({
+                    x: map_x,
+                    y: map_y,
+                    w: TILE_WIDTH,
+                    h: TILE_HEIGHT
+                });
+
+                var sheet_x = 0;
+                var sheet_y = 0;
+                var solid = false;
+
+                geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+
+                tiles[y][x] = new Tile(quad, sheet_x, sheet_y, solid);
+            }
+        }
 
     }
 

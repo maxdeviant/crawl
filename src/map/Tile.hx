@@ -2,7 +2,8 @@ package map;
 
 class Tile {
 
-    private var quad_id : Int;
+    public var quad_id : Int;
+
     private var sheet_x : Int;
     private var sheet_y : Int;
     private var solid : Bool;
@@ -13,12 +14,6 @@ class Tile {
         this.sheet_x = sheet_x;
         this.sheet_y = sheet_y;
         this.solid = solid;
-
-    }
-
-    public function getquad_id() {
-
-        return quad_id;
 
     }
 

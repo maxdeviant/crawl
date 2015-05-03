@@ -52,7 +52,9 @@ class Main extends luxe.Game {
 
         World.getInstance().setMap(new Map('assets/tileset.png', 50, 50));
 
-        player = new Player(5, 5);
+        var player_spawn = World.getInstance().getMap().getPlayerSpawn();
+
+        player = new Player(Std.int(player_spawn.x), Std.int(player_spawn.y));
 
         player.centerCamera();
 
