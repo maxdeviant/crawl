@@ -60,10 +60,6 @@ class Player extends Entity {
 
         sprite.pos = new Vector(location.x * size, location.y * size);
 
-        centerCamera();
-
-        World.getInstance().getMap().computeFOV(location.x, location.y, fov);
-
         var blocked = isBlocked();
 
         if (blocked) {
@@ -71,10 +67,10 @@ class Player extends Entity {
             location.y = lastY;
 
             sprite.pos = new Vector(lastX * size, lastY * size);
-
-            centerCamera();
-            World.getInstance().getMap().computeFOV(location.x, location.y, fov);
         }
+
+        centerCamera();
+        World.getInstance().getMap().computeFOV(location.x, location.y, fov);
 
         var collision = isColliding();
 

@@ -36,6 +36,8 @@ class Main extends luxe.Game {
 
     override function ready() {
 
+        Luxe.renderer.clear_color = new Color(0.0, 0.0, 0.0);
+
         hud_batcher = Luxe.renderer.create_batcher({
             name: 'hud',
             camera: new Camera(),
