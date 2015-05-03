@@ -84,7 +84,7 @@ class Map {
     public function getTile(x: Int, y: Int) {
 
         try {
-            return tiles[x][y];
+            return tiles[y][x];
         } catch (e: Dynamic) {
             return null;
         }
@@ -121,7 +121,7 @@ class Map {
 
                 sheet_x = 1;
                 sheet_y = 0;
-                solid = false;
+                solid = true;
 
                 geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
 
