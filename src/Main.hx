@@ -13,6 +13,8 @@ class Main extends luxe.Game {
 
     var hud_batcher : Batcher;
 
+    var health_bar : Text;
+
     var player : Player;
     var entities : Array<Entity> = new Array();
 
@@ -56,6 +58,14 @@ class Main extends luxe.Game {
 
         World.getInstance().register(new Enemy(10, 10));
 
+        health_bar = new Text({
+            no_batcher_add: true,
+            pos: new Vector(0, 0),
+            text: 'HP: ' + player.health
+        });
+
+        hud_batcher.add(health_bar.geometry);
+
     }
 
     override function onkeyup(event: KeyEvent) {
@@ -82,14 +92,11 @@ class Main extends luxe.Game {
             openCharacterSheet();
         }
 
-        var text = new Text({
-            immediate: true,
-            no_batcher_add: true,
-            pos: new Vector(0, 0),
-            text: 'HP: ' + player.health
-        });
+    }
 
-        hud_batcher.add(text.geometry);
+    override function onrender() {
+
+        health_bar.text = 'HP: ' + player.health;
 
     }
 
