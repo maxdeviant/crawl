@@ -73,7 +73,7 @@ class Map {
             if (room == 0) {
                 player_spawn = new_room.getCenter();
             } else {
-
+                connectRooms(rooms[rooms.length - 1], new_room);
             }
 
             rooms.push(new_room);
@@ -159,6 +159,81 @@ class Map {
 
                 tiles[y][x] = new Tile(quad, sheet_x, sheet_y, solid);
             }
+        }
+
+    }
+
+    private function connectRooms(room_a: Room, room_b: Room) {
+
+        var old_room = room_a.getCenter();
+        var new_room = room_b.getCenter();
+
+        var order = Math.round(Math.random());
+
+        if (order == 0) {
+            createHorizontalTunnel(old_room.x, new_room.x, old_room.y);
+            createVerticalTunnel(old_room.y, new_room.y, new_room.x);
+        } else {
+            createVerticalTunnel(old_room.y, new_room.y, old_room.x);
+            createHorizontalTunnel(old_room.x, new_room.x, new_room.y);
+        }
+
+    }
+
+    private function createHorizontalTunnel(start_x: Int, end_x: Int, y: Int) {
+
+        var min : Int = Std.int(Math.min(start_x, end_x));
+        var max : Int = Std.int(Math.max(start_x, end_x) + 1);
+
+        for (x in min ... max) {
+            geometry.quad_remove(tiles[y][x].quad_id);
+
+            var map_x = x * TILE_WIDTH;
+            var map_y = y * TILE_HEIGHT;
+
+            var quad = geometry.quad_add({
+                x: map_x,
+                y: map_y,
+                w: TILE_WIDTH,
+                h: TILE_HEIGHT
+            });
+
+            var sheet_x = 0;
+            var sheet_y = 0;
+            var solid = false;
+
+            geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+
+            tiles[y][x] = new Tile(quad, sheet_x, sheet_y, solid);
+        }
+
+    }
+
+    private function createVerticalTunnel(start_y: Int, end_y: Int, x: Int) {
+
+        var min : Int = Std.int(Math.min(start_y, end_y));
+        var max : Int = Std.int(Math.max(start_y, end_y) + 1);
+
+        for (y in min ... max) {
+            geometry.quad_remove(tiles[y][x].quad_id);
+
+            var map_x = x * TILE_WIDTH;
+            var map_y = y * TILE_HEIGHT;
+
+            var quad = geometry.quad_add({
+                x: map_x,
+                y: map_y,
+                w: TILE_WIDTH,
+                h: TILE_HEIGHT
+            });
+
+            var sheet_x = 0;
+            var sheet_y = 0;
+            var solid = false;
+
+            geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+
+            tiles[y][x] = new Tile(quad, sheet_x, sheet_y, solid);
         }
 
     }
