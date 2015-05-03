@@ -5,8 +5,10 @@ import luxe.Vector;
 import luxe.Text;
 import phoenix.Batcher;
 import phoenix.Camera;
+import phoenix.Texture;
 
 import map.*;
+import items.*;
 import entities.*;
 
 class Main extends luxe.Game {
@@ -22,6 +24,10 @@ class Main extends luxe.Game {
 
         config.preload.textures.push({
             id: 'assets/tileset.png'
+        });
+
+        config.preload.textures.push({
+            id: 'assets/items.png'
         });
 
         return config;
@@ -57,6 +63,11 @@ class Main extends luxe.Game {
         player = new Player(Std.int(player_spawn.x), Std.int(player_spawn.y));
 
         player.centerCamera();
+
+        var image = Luxe.resources.texture('assets/items.png');
+        image.filter_min = image.filter_mag = FilterType.nearest;
+
+        var item = new Item('Sword', Std.int(player_spawn.x) + 1, Std.int(player_spawn.y) + 1, image);
 
         World.getInstance().register(new Enemy(10, 10));
 
