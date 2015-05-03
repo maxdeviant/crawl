@@ -6,7 +6,7 @@ import luxe.Rectangle;
 import phoenix.Batcher;
 import phoenix.geometry.QuadPackGeometry;
 
-typedef SpawnPoint = {
+typedef Location = {
     x: Int,
     y: Int
 };
@@ -21,7 +21,7 @@ class Map {
 
     private var tiles : Array<Array<Tile>>;
 
-    private var player_spawn : SpawnPoint;
+    private var player_spawn : Location;
 
     public function new(spritesheet: String, width: Int, height: Int) {
 
@@ -100,19 +100,87 @@ class Map {
 
     public function computeFOV(player_x: Int, player_y: Int, fov: Int) {
 
+        var multipliers : Array<Array<Int>> = [
+            [1,  0,  0, -1, -1,  0,  0,  1],
+            [0,  1, -1,  0,  0, -1,  1,  0],
+            [0,  1,  1,  0,  0, -1, -1,  0],
+            [1,  0,  0,  1, -1,  0,  0, -1]
+        ];
+
         for (y in 0 ... tiles.length) {
             for (x in 0 ... tiles[y].length) {
-                var distance = Math.sqrt(Math.pow((x - player_x), 2) + Math.pow((y - player_y), 2));
-
-                if (distance <= fov) {
-                    geometry.quad_color(tiles[y][x].quad_id, new Color(1, 1, 1));
-                } else {
-                    geometry.quad_color(tiles[y][x].quad_id, new Color(0.5, 0.5, 0.5));
-                }
+                geometry.quad_color(tiles[y][x].quad_id, new Color(0.5, 0.5, 0.5));
             }
         }
 
+        geometry.quad_color(tiles[player_y][player_x].quad_id, new Color(1, 1, 1));
+
+        for (octant in 0 ... 8) {
+            castLight(player_x, player_y, 1, 1.0, 0.0, fov, multipliers[0][octant], multipliers[1][octant], multipliers[2][octant], multipliers[3][octant], 0);
+        }
+
         geometry.dirty = true;
+
+    }
+
+    private function castLight(cx: Int, cy: Int, row: Int, light_start: Float, light_end: Float, radius: Int, xx: Int, xy: Int, yx: Int, yy: Int, id: Int) {
+
+        var new_start : Float = 0.0;
+
+        if (light_start < light_end) {
+            return;
+        }
+
+        var radius_sq = radius * radius;
+
+        for (j in row ... radius) {
+            var dx = -j - 1;
+            var dy = -j;
+
+            var blocked = false;
+
+            while (dx <= 0) {
+                dx += 1;
+
+                var mx = cx + dx * xx + dy * xy;
+                var my = cy + dx * yx + dy * yy;
+
+                var l_slope = (dx - 0.5) / (dy + 0.5);
+                var r_slope = (dx + 0.5) / (dy - 0.5);
+
+                if (light_start < r_slope) {
+                    continue;
+                } else if (light_end > l_slope) {
+                    break;
+                } else {
+                    if (dx * dx + dy * dy < radius_sq) {
+                        geometry.quad_color(tiles[my][mx].quad_id, new Color(1, 1, 1));
+                    }
+
+                    if (blocked) {
+                        if (tiles[my][mx].isSolid()) {
+                            new_start = r_slope;
+                            continue;
+                        } else {
+                            blocked = false;
+                            light_start = new_start;
+                        }
+                    } else {
+                        if (tiles[my][mx].isSolid() && j < radius) {
+                            blocked = true;
+
+                            castLight(cx, cy, j + 1, light_start, l_slope, radius, xx, xy, yx, yy, id + 1);
+
+                            new_start = r_slope;
+                        }
+                    }
+                }
+            }
+
+            if (blocked) {
+                break;
+            }
+        }
 
     }
 
