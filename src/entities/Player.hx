@@ -22,7 +22,7 @@ class Player extends Entity {
 
     public function new(x: Int, y: Int) {
 
-        super('Player', x, y, new Color().rgb(0xf94b04));
+        super('Player', x, y, 0, 0);
 
         location = {
             x: x,
@@ -58,7 +58,7 @@ class Player extends Entity {
             location.x += 1;
         }
 
-        sprite.pos = new Vector(location.x * size, location.y * size);
+        sprite.pos = new Vector(location.x * SIZE, location.y * SIZE);
 
         var blocked = isBlocked();
 
@@ -66,7 +66,7 @@ class Player extends Entity {
             location.x = lastX;
             location.y = lastY;
 
-            sprite.pos = new Vector(lastX * size, lastY * size);
+            sprite.pos = new Vector(lastX * SIZE, lastY * SIZE);
         }
 
         centerCamera();
@@ -78,7 +78,7 @@ class Player extends Entity {
             location.x = lastX;
             location.y = lastY;
 
-            sprite.pos = new Vector(lastX * size, lastY * size);
+            sprite.pos = new Vector(lastX * SIZE, lastY * SIZE);
 
             centerCamera();
             World.getInstance().getMap().computeFOV(location.x, location.y, fov);
@@ -122,8 +122,8 @@ class Player extends Entity {
         for (entity in entities) {
             playerX1 = sprite.pos.x;
             playerY1 = sprite.pos.y;
-            playerX2 = playerX1 + size;
-            playerY2 = playerY1 + size;
+            playerX2 = playerX1 + SIZE;
+            playerY2 = playerY1 + SIZE;
 
             entityX1 = entity.getPosition().x;
             entityY1 = entity.getPosition().y;

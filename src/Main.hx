@@ -27,6 +27,10 @@ class Main extends luxe.Game {
         });
 
         config.preload.textures.push({
+            id: 'assets/spritesheet.png'
+        });
+
+        config.preload.textures.push({
             id: 'assets/items.png'
         });
 
@@ -60,16 +64,19 @@ class Main extends luxe.Game {
 
         World.getInstance().setMap(new Map('assets/tileset.png', 50, 50));
 
+        var sprite_sheet = Luxe.resources.texture('assets/spritesheet.png');
+        sprite_sheet.filter_min = sprite_sheet.filter_mag = FilterType.nearest;
+
+        var item_sheet = Luxe.resources.texture('assets/items.png');
+        item_sheet.filter_min = item_sheet.filter_mag = FilterType.nearest;
+
         var player_spawn = World.getInstance().getMap().getPlayerSpawn();
 
         player = new Player(Std.int(player_spawn.x), Std.int(player_spawn.y));
 
         player.centerCamera();
 
-        var image = Luxe.resources.texture('assets/items.png');
-        image.filter_min = image.filter_mag = FilterType.nearest;
-
-        var item = new Item('Sword', Std.int(player_spawn.x) + 1, Std.int(player_spawn.y) + 1, image);
+        var item = new Item('Sword', Std.int(player_spawn.x) + 1, Std.int(player_spawn.y) + 1, item_sheet);
 
         World.getInstance().register(new Enemy(10, 10));
 

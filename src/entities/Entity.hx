@@ -1,25 +1,28 @@
 package entities;
 
 import luxe.Sprite;
+import luxe.Rectangle;
 import luxe.Color;
 import luxe.Vector;
 
 class Entity {
 
     var sprite : Sprite;
-    var size : Int = 32;
+    var SIZE : Int = 32;
 
-    public function new(name: String, x: Int, y: Int, color: Color) {
+    public function new(name: String, x: Int, y: Int, sheet_x: Int, sheet_y: Int) {
 
-        var map_x = x * size;
-        var map_y = y * size;
+        var map_x = x * SIZE;
+        var map_y = y * SIZE;
 
         sprite = new Sprite({
             centered: false,
             name: name,
             pos: new Vector(map_x, map_y),
-            color: color,
-            size: new Vector(size, size)
+            texture: Luxe.resources.texture('assets/spritesheet.png'),
+            uv: new Rectangle(sheet_x * SIZE, sheet_y * SIZE, SIZE, SIZE),
+            color: new Color(1.0, 1.0, 1.0),
+            size: new Vector(SIZE, SIZE)
         });
 
     }
@@ -32,7 +35,7 @@ class Entity {
 
     public function getSize() {
 
-        return size;
+        return SIZE;
 
     }
 
