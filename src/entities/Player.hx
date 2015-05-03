@@ -101,7 +101,7 @@ class Player extends Entity {
         var tile = World.getInstance().getMap().getTile(location.x, location.y);
 
         if (tile == null) {
-            return null;
+            return false;
         }
 
         return tile.isSolid();
