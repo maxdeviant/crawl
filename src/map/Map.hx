@@ -34,6 +34,16 @@ class Map {
 
     }
 
+    public function getTile(x: Int, y: Int) {
+
+        try {
+            return tiles[x][y];
+        } catch (e: Dynamic) {
+            return null;
+        }
+
+    }
+
     private function generate(width: Int, height: Int) {
 
         var map_tiles = new Array<Array<Tile>>();

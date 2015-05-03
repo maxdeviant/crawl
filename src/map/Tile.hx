@@ -16,4 +16,10 @@ class Tile {
 
     }
 
+    public function isSolid() {
+
+        return solid;
+
+    }
+
 }

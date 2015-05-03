@@ -5,7 +5,14 @@ import luxe.Color;
 import luxe.Vector;
 import luxe.Text;
 
+typedef Location = {
+    x : Int,
+    y : Int
+};
+
 class Player extends Entity {
+
+    public var location : Location;
 
     public var health : Int = 100;
     public var power : Int = 10;
@@ -14,6 +21,11 @@ class Player extends Entity {
     public function new(x: Int, y: Int) {
 
         super('Player', x, y, new Color().rgb(0xf94b04));
+
+        location = {
+            x: x,
+            y: y
+        };
 
     }
 
@@ -29,26 +41,41 @@ class Player extends Entity {
 
     public function move(direction: Direction) {
 
-        var lastX = sprite.pos.x;
-        var lastY = sprite.pos.y;
+        var lastX = location.x;
+        var lastY = location.y;
 
         if (direction == Direction.Up) {
-            sprite.pos.y -= size;
+            location.y -= 1;
         } else if (direction == Direction.Down) {
-            sprite.pos.y += size;
+            location.y += 1;
         } else if (direction == Direction.Left) {
-            sprite.pos.x -= size;
+            location.x -= 1;
         } else if (direction == Direction.Right) {
-            sprite.pos.x += size;
+            location.x += 1;
         }
 
+        sprite.pos = new Vector(location.x * size, location.y * size);
+
         centerCamera();
+
+        var blocked = isBlocked();
+
+        if (blocked) {
+            location.x = lastX;
+            location.y = lastY;
+
+            sprite.pos = new Vector(lastX * size, lastY * size);
+
+            centerCamera();
+        }
 
         var collision = isColliding();
 
         if (collision != null) {
-            sprite.pos.x = lastX;
-            sprite.pos.y = lastY;
+            location.x = lastX;
+            location.y = lastY;
+
+            sprite.pos = new Vector(lastX * size, lastY * size);
 
             centerCamera();
 
@@ -66,6 +93,18 @@ class Player extends Entity {
     public function attack(target: Entity) {
 
         target.damage(power);
+
+    }
+
+    private function isBlocked() {
+
+        var tile = World.getInstance().getMap().getTile(location.x, location.y);
+
+        if (tile == null) {
+            return null;
+        }
+
+        return tile.isSolid();
 
     }
 

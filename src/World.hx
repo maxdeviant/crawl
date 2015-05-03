@@ -1,14 +1,35 @@
+import map.*;
 import entities.*;
 
 class World {
 
     private static var instance : World = new World();
 
-    private var entities : Array<Entity> = new Array();
+    private var map : Map;
+
+    private var entities : Array<Entity>;
+
+    private function new() {
+
+        entities = new Array<Entity>();
+
+    }
 
     public static function getInstance() {
 
         return instance;
+
+    }
+
+    public function setMap(map: Map) {
+
+        this.map = map;
+
+    }
+
+    public function getMap() {
+
+        return map;
 
     }
 

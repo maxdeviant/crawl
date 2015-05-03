@@ -13,8 +13,6 @@ class Main extends luxe.Game {
 
     var hud_batcher : Batcher;
 
-    var map : Map;
-
     var player : Player;
     var entities : Array<Entity> = new Array();
 
@@ -50,10 +48,7 @@ class Main extends luxe.Game {
 
         Luxe.input.bind_key('character_sheet', Key.key_c);
 
-        var tile_count_x = Std.int(Luxe.screen.w / 32);
-        var tile_count_y = Std.int(Luxe.screen.h / 32);
-
-        map = new Map('assets/tileset.png', tile_count_x, tile_count_y);
+        World.getInstance().setMap(new Map('assets/tileset.png', 50, 50));
 
         player = new Player(5, 5);
 
