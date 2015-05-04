@@ -117,6 +117,8 @@ class Map {
 
         for (y in 0 ... tiles.length) {
             for (x in 0 ... tiles[y].length) {
+                tiles[y][x].setVisible(false);
+
                 if (tiles[y][x].isExplored()) {
                     geometry.quad_color(tiles[y][x].quad_id, EXPLORED);
                 } else {
@@ -130,6 +132,16 @@ class Map {
 
         for (octant in 0 ... 8) {
             castLight(player_x, player_y, 1, 1.0, 0.0, fov, multipliers[0][octant], multipliers[1][octant], multipliers[2][octant], multipliers[3][octant], 0);
+        }
+
+        for (entity in World.getInstance().getEntities()) {
+            var tile = tiles[entity.location.y][entity.location.x];
+
+            if (tile.isVisible()) {
+                entity.sprite.visible = true;
+            } else {
+                entity.sprite.visible = false;
+            }
         }
 
         geometry.dirty = true;
@@ -168,6 +180,7 @@ class Map {
                 } else {
                     if (dx * dx + dy * dy < radius_sq) {
                         tiles[my][mx].explore();
+                        tiles[my][mx].setVisible(true);
                         geometry.quad_color(tiles[my][mx].quad_id, VISIBLE);
                     }
 

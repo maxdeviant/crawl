@@ -5,12 +5,24 @@ import luxe.Rectangle;
 import luxe.Color;
 import luxe.Vector;
 
+typedef Location = {
+    x : Int,
+    y : Int
+};
+
 class Entity {
 
-    var sprite : Sprite;
+    public var location : Location;
+
+    public var sprite : Sprite;
     var SIZE : Int = 32;
 
     public function new(name: String, x: Int, y: Int, sheet_x: Int, sheet_y: Int) {
+
+        location = {
+            x: x,
+            y: y
+        };
 
         var map_x = x * SIZE;
         var map_y = y * SIZE;

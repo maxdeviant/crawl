@@ -5,14 +5,7 @@ import luxe.Color;
 import luxe.Vector;
 import luxe.Text;
 
-typedef Location = {
-    x : Int,
-    y : Int
-};
-
 class Player extends Entity {
-
-    public var location : Location;
 
     public var fov : Int = 5;
 
@@ -23,11 +16,6 @@ class Player extends Entity {
     public function new(x: Int, y: Int) {
 
         super('Player', x, y, 0, 0);
-
-        location = {
-            x: x,
-            y: y
-        };
 
         World.getInstance().getMap().computeFOV(location.x, location.y, fov);
 

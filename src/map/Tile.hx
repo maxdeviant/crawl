@@ -8,6 +8,7 @@ class Tile {
     private var sheet_y : Int;
     private var solid : Bool;
     private var explored : Bool;
+    private var visible : Bool;
 
     public function new(quad_id: Int, sheet_x: Int, sheet_y: Int, solid: Bool) {
 
@@ -16,6 +17,7 @@ class Tile {
         this.sheet_y = sheet_y;
         this.solid = solid;
         this.explored = false;
+        this.visible = false;
 
     }
 
@@ -34,6 +36,18 @@ class Tile {
     public function explore() {
 
         explored = true;
+
+    }
+
+    public function isVisible() {
+
+        return visible;
+
+    }
+
+    public function setVisible(visible: Bool) {
+
+        this.visible = visible;
 
     }
 
