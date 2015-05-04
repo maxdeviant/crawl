@@ -6,6 +6,8 @@ import luxe.Rectangle;
 import phoenix.Batcher;
 import phoenix.geometry.QuadPackGeometry;
 
+import entities.Enemy;
+
 typedef Location = {
     x: Int,
     y: Int
@@ -83,6 +85,8 @@ class Map {
 
             rooms.push(new_room);
         }
+
+        populate(rooms);
 
     }
 
@@ -230,6 +234,33 @@ class Map {
         }
 
         return map_tiles;
+
+    }
+
+    private function populate(rooms: Array<Room>) {
+
+        var MIN_ENEMIES = 1;
+        var MAX_ENEMIES = 4;
+
+        var room_number = 0;
+
+        for (room in rooms) {
+            room_number++;
+
+            var num_enemies = Math.floor(Math.random() * (MAX_ENEMIES - MIN_ENEMIES)) + MIN_ENEMIES;
+
+            for (enemy in 0 ... num_enemies) {
+                var x : Int;
+                var y : Int;
+
+                do {
+                    x = Math.floor(Math.random() * ((room.x + room.width) - room.x) + room.x);
+                    y = Math.floor(Math.random() * ((room.y + room.height) - room.y) + room.y);
+                }  while (tiles[y][x].isSolid());
+
+                World.getInstance().register(new Enemy('Guard ' + room_number + '.' + enemy, x, y));
+            }
+        }
 
     }
 

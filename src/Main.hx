@@ -79,8 +79,6 @@ class Main extends luxe.Game {
 
         var item = new Item('Sword', Std.int(player_spawn.x) + 1, Std.int(player_spawn.y) + 1, item_sheet);
 
-        World.getInstance().register(new Enemy(10, 10));
-
         health_bar = new Text({
             no_batcher_add: true,
             pos: new Vector(0, 0),

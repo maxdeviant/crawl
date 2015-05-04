@@ -10,9 +10,9 @@ class Enemy extends Entity {
     public var health : Int = 100;
     public var power : Int = 10;
 
-    public function new(x: Int, y: Int) {
+    public function new(name: String, x: Int, y: Int) {
 
-        super('Enemy', x, y, 0, 1);
+        super(name, x, y, 0, 1);
 
     }
 
