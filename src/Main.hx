@@ -5,20 +5,18 @@ import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
 import luxe.Text;
-import luxe.Log.*;
 import phoenix.Batcher;
 import phoenix.Camera;
 import phoenix.Texture;
 
+import hud.*;
 import map.*;
 import items.*;
 import entities.*;
 
 class Main extends luxe.Game {
 
-    var hud_batcher : Batcher;
-
-    var health_bar : Text;
+    var hud : HUD;
 
     var player : Player;
     var entities : Array<Entity> = new Array();
@@ -46,12 +44,6 @@ class Main extends luxe.Game {
         Luxe.renderer.clear_color = new Color(0.0, 0.0, 0.0);
         Luxe.camera.zoom = 2.5;
 
-        hud_batcher = Luxe.renderer.create_batcher({
-            name: 'hud',
-            camera: new Camera(),
-            layer: 2
-        });
-
         Luxe.input.bind_key('up', Key.up);
         Luxe.input.bind_key('up', Key.key_w);
 
@@ -63,8 +55,6 @@ class Main extends luxe.Game {
 
         Luxe.input.bind_key('right', Key.right);
         Luxe.input.bind_key('right', Key.key_d);
-
-        Luxe.input.bind_key('character_sheet', Key.key_c);
 
         World.getInstance().setMap(new Map('assets/tileset.png', 50, 50));
 
@@ -80,15 +70,13 @@ class Main extends luxe.Game {
 
         player.centerCamera();
 
+        World.getInstance().setPlayer(player);
+
         var item = new Item('Sword', Std.int(player_spawn.x) + 1, Std.int(player_spawn.y) + 1, item_sheet);
 
-        health_bar = new Text({
-            no_batcher_add: true,
-            pos: new Vector(0, 0),
-            text: 'HP: ' + player.health
-        });
+        hud = new HUD(Luxe.renderer);
 
-        hud_batcher.add(health_bar.geometry);
+        hud.register(new HealthBar(0, 0));
 
     }
 
@@ -116,38 +104,11 @@ class Main extends luxe.Game {
 
     override function update(dt: Float) {
 
-        if (Luxe.input.inputdown('character_sheet')) {
-            openCharacterSheet();
-        }
-
     }
 
     override function onrender() {
 
-        health_bar.text = 'HP: ' + player.health;
-
-    }
-
-    function openCharacterSheet() {
-
-        var background = Luxe.draw.box({
-            immediate: true,
-            batcher: hud_batcher,
-            x: Luxe.screen.w / 10,
-            y: Luxe.screen.h / 10,
-            w: Luxe.screen.w - 2 * (Luxe.screen.w / 10),
-            h: Luxe.screen.h - 2 * (Luxe.screen.h / 10),
-            color: new Color().rgb(0x2e2e2e)
-        });
-
-        var text = new Text({
-            immediate: true,
-            no_batcher_add: true,
-            pos: new Vector(Luxe.screen.w / 10 + 10, Luxe.screen.h / 10 + 10),
-            text: 'POW: ' + player.power
-        });
-
-        hud_batcher.add(text.geometry);
+        hud.updateAll();
 
     }
 

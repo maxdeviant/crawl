@@ -9,6 +9,7 @@ class World {
 
     private var map : Map;
 
+    private var player : Player;
     private var entities : Array<Entity>;
 
     private function new() {
@@ -32,6 +33,18 @@ class World {
     public function getMap() {
 
         return map;
+
+    }
+
+    public function setPlayer(player: Player) {
+
+        this.player = player;
+
+    }
+
+    public function getPlayer() {
+
+        return player;
 
     }
 
