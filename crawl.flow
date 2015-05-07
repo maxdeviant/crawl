@@ -18,6 +18,9 @@
             package: 'com.maxdeviant.crawl'
         },
         build: {
+            flags: [
+                '--macro luxe.Log.level(1)'
+            ],
             dependencies: {
                 luxe: '*',
             }
