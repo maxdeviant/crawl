@@ -210,6 +210,8 @@ class Map {
 
     private function generate(width: Int, height: Int) {
 
+        log('[MAP] Generating new $width x $height map');
+
         var map_tiles = new Array<Array<Tile>>();
 
         for (x in 0 ... width) {

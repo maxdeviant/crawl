@@ -15,6 +15,8 @@ class HUD {
 
     public function new(renderer: Renderer) {
 
+        log('[HUD] Initialising');
+
         batcher = renderer.create_batcher({
             name: 'hud',
             camera: new Camera(),
@@ -31,6 +33,8 @@ class HUD {
 
         batcher.add(element.geometry);
 
+        log('[HUD] Registered "${element.id}"');
+
     }
 
     public function update(id: String) {
@@ -39,6 +43,8 @@ class HUD {
 
         element.update();
 
+        log('[HUD] Updated "${element.id}"');
+
     }
 
     public function updateAll() {
@@ -46,6 +52,8 @@ class HUD {
         for (element in elements) {
 
             element.update();
+
+            // log('[HUD] Updated "${element.id}"');
 
         }
 
