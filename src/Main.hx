@@ -18,8 +18,9 @@ class Main extends luxe.Game {
 
     var hud : HUD;
 
+    var world : World;
+
     var player : Player;
-    var entities : Array<Entity> = new Array();
 
     override function config(config: luxe.AppConfig) {
 
@@ -56,7 +57,9 @@ class Main extends luxe.Game {
         Luxe.input.bind_key('right', Key.right);
         Luxe.input.bind_key('right', Key.key_d);
 
-        World.getInstance().setMap(new Map('assets/tileset.png', 50, 50));
+        world = World.getInstance();
+
+        world.setMap(new Map('assets/tileset.png', 50, 50));
 
         var sprite_sheet = Luxe.resources.texture('assets/spritesheet.png');
         sprite_sheet.filter_min = sprite_sheet.filter_mag = FilterType.nearest;
@@ -64,13 +67,13 @@ class Main extends luxe.Game {
         var item_sheet = Luxe.resources.texture('assets/items.png');
         item_sheet.filter_min = item_sheet.filter_mag = FilterType.nearest;
 
-        var player_spawn = World.getInstance().getMap().getPlayerSpawn();
+        var player_spawn = world.getMap().getPlayerSpawn();
 
         player = new Player(Std.int(player_spawn.x), Std.int(player_spawn.y));
 
         player.centerCamera();
 
-        World.getInstance().setPlayer(player);
+        world.setPlayer(player);
 
         var item = new Item('Sword', Std.int(player_spawn.x) + 1, Std.int(player_spawn.y) + 1, item_sheet);
 
