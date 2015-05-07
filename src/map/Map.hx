@@ -93,7 +93,7 @@ class Map {
     public function getTile(x: Int, y: Int) {
 
         try {
-            return tiles[y][x];
+            return tiles[x][y];
         } catch (e: Dynamic) {
             return null;
         }
@@ -115,27 +115,27 @@ class Map {
             [1,  0,  0,  1, -1,  0,  0, -1]
         ];
 
-        for (y in 0 ... tiles.length) {
-            for (x in 0 ... tiles[y].length) {
-                tiles[y][x].setVisible(false);
+        for (x in 0 ... tiles.length) {
+            for (y in 0 ... tiles[x].length) {
+                tiles[x][y].setVisible(false);
 
-                if (tiles[y][x].isExplored()) {
-                    geometry.quad_color(tiles[y][x].quad_id, EXPLORED);
+                if (tiles[x][y].isExplored()) {
+                    geometry.quad_color(tiles[x][y].quad_id, EXPLORED);
                 } else {
-                    geometry.quad_color(tiles[y][x].quad_id, UNEXPLORED);
+                    geometry.quad_color(tiles[x][y].quad_id, UNEXPLORED);
                 }
             }
         }
 
-        tiles[player_y][player_x].explore();
-        geometry.quad_color(tiles[player_y][player_x].quad_id, VISIBLE);
+        tiles[player_x][player_y].explore();
+        geometry.quad_color(tiles[player_x][player_y].quad_id, VISIBLE);
 
         for (octant in 0 ... 8) {
             castLight(player_x, player_y, 1, 1.0, 0.0, fov, multipliers[0][octant], multipliers[1][octant], multipliers[2][octant], multipliers[3][octant], 0);
         }
 
         for (entity in World.getInstance().getEntities()) {
-            var tile = tiles[entity.location.y][entity.location.x];
+            var tile = tiles[entity.location.x][entity.location.y];
 
             if (tile.isVisible()) {
                 entity.sprite.visible = true;
@@ -179,13 +179,13 @@ class Map {
                     break;
                 } else {
                     if (dx * dx + dy * dy < radius_sq) {
-                        tiles[my][mx].explore();
-                        tiles[my][mx].setVisible(true);
-                        geometry.quad_color(tiles[my][mx].quad_id, VISIBLE);
+                        tiles[mx][my].explore();
+                        tiles[mx][my].setVisible(true);
+                        geometry.quad_color(tiles[mx][my].quad_id, VISIBLE);
                     }
 
                     if (blocked) {
-                        if (tiles[my][mx].isSolid()) {
+                        if (tiles[mx][my].isSolid()) {
                             new_start = r_slope;
                             continue;
                         } else {
@@ -193,7 +193,7 @@ class Map {
                             light_start = new_start;
                         }
                     } else {
-                        if (tiles[my][mx].isSolid() && j < radius) {
+                        if (tiles[mx][my].isSolid() && j < radius) {
                             blocked = true;
 
                             castLight(cx, cy, j + 1, light_start, l_slope, radius, xx, xy, yx, yy, id + 1);
@@ -215,10 +215,10 @@ class Map {
 
         var map_tiles = new Array<Array<Tile>>();
 
-        for (y in 0 ... height) {
+        for (x in 0 ... width) {
             var row = new Array<Tile>();
 
-            for (x in 0 ... width) {
+            for (y in 0 ... height) {
                 var map_x = x * TILE_WIDTH;
                 var map_y = y * TILE_HEIGHT;
 
@@ -269,7 +269,7 @@ class Map {
                 do {
                     x = Math.floor(Math.random() * ((room.x + room.width) - room.x) + room.x);
                     y = Math.floor(Math.random() * ((room.y + room.height) - room.y) + room.y);
-                }  while (tiles[y][x].isSolid());
+                }  while (tiles[x][y].isSolid());
 
                 World.getInstance().register(new Enemy('Guard ' + room_number + '.' + enemy, x, y));
             }
@@ -279,9 +279,9 @@ class Map {
 
     private function createRoom(x1: Int, y1: Int, width: Int, height: Int) {
 
-        for (y in y1 ... y1 + height + 1) {
-            for (x in x1 ... x1 + width + 1) {
-                geometry.quad_remove(tiles[y][x].quad_id);
+        for (x in x1 ... x1 + width + 1) {
+            for (y in y1 ... y1 + height + 1) {
+                geometry.quad_remove(tiles[x][y].quad_id);
 
                 var map_x = x * TILE_WIDTH;
                 var map_y = y * TILE_HEIGHT;
@@ -300,7 +300,7 @@ class Map {
 
                 geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
 
-                tiles[y][x] = new Tile(quad, sheet_x, sheet_y, solid);
+                tiles[x][y] = new Tile(quad, sheet_x, sheet_y, solid);
             }
         }
 
@@ -329,7 +329,7 @@ class Map {
         var max : Int = Std.int(Math.max(start_x, end_x) + 1);
 
         for (x in min ... max) {
-            geometry.quad_remove(tiles[y][x].quad_id);
+            geometry.quad_remove(tiles[x][y].quad_id);
 
             var map_x = x * TILE_WIDTH;
             var map_y = y * TILE_HEIGHT;
@@ -348,7 +348,7 @@ class Map {
 
             geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
 
-            tiles[y][x] = new Tile(quad, sheet_x, sheet_y, solid);
+            tiles[x][y] = new Tile(quad, sheet_x, sheet_y, solid);
         }
 
     }
@@ -359,7 +359,7 @@ class Map {
         var max : Int = Std.int(Math.max(start_y, end_y) + 1);
 
         for (y in min ... max) {
-            geometry.quad_remove(tiles[y][x].quad_id);
+            geometry.quad_remove(tiles[x][y].quad_id);
 
             var map_x = x * TILE_WIDTH;
             var map_y = y * TILE_HEIGHT;
@@ -378,7 +378,7 @@ class Map {
 
             geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
 
-            tiles[y][x] = new Tile(quad, sheet_x, sheet_y, solid);
+            tiles[x][y] = new Tile(quad, sheet_x, sheet_y, solid);
         }
 
     }
