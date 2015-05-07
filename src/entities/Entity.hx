@@ -7,11 +7,6 @@ import luxe.Rectangle;
 import luxe.Color;
 import luxe.Vector;
 
-typedef Location = {
-    x : Int,
-    y : Int
-};
-
 class Entity {
 
     public var location : Location;

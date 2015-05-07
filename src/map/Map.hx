@@ -10,11 +10,6 @@ import phoenix.geometry.QuadPackGeometry;
 
 import entities.Enemy;
 
-typedef Location = {
-    x: Int,
-    y: Int
-};
-
 class Map {
 
     private var TILE_WIDTH : Int = 32;
