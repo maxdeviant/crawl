@@ -34,6 +34,8 @@ class Entity {
             size: new Vector(SIZE, SIZE)
         });
 
+        sprite.geometry.texture.filter_min = sprite.geometry.texture.filter_mag = phoenix.Texture.FilterType.nearest;
+
     }
 
     public function getPosition() {

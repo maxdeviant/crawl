@@ -12,7 +12,7 @@ class Item {
     var sprite : Sprite;
     var SIZE : Int = 32;
 
-    public function new(name: String, x: Int, y: Int, texture: Texture) {
+    public function new(name: String, x: Int, y: Int) {
 
         var map_x = x * SIZE;
         var map_y = y * SIZE;
@@ -21,10 +21,12 @@ class Item {
             centered: false,
             name: name,
             pos: new Vector(map_x, map_y),
-            texture: texture,
+            texture: Luxe.resources.texture('assets/items.png'),
             uv: new Rectangle(0, 0, SIZE, SIZE),
             size: new Vector(SIZE, SIZE)
         });
+
+        sprite.geometry.texture.filter_min = sprite.geometry.texture.filter_mag = phoenix.Texture.FilterType.nearest;
 
     }
 

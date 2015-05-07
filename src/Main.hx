@@ -45,37 +45,15 @@ class Main extends luxe.Game {
         Luxe.renderer.clear_color = new Color(0.0, 0.0, 0.0);
         Luxe.camera.zoom = 2.5;
 
-        Luxe.input.bind_key('up', Key.up);
-        Luxe.input.bind_key('up', Key.key_w);
-
-        Luxe.input.bind_key('down', Key.down);
-        Luxe.input.bind_key('down', Key.key_s);
-
-        Luxe.input.bind_key('left', Key.left);
-        Luxe.input.bind_key('left', Key.key_a);
-
-        Luxe.input.bind_key('right', Key.right);
-        Luxe.input.bind_key('right', Key.key_d);
+        setup_controls();
 
         world = World.getInstance();
 
-        world.setMap(new Map('assets/tileset.png', 50, 50));
+        world.setMap(new Map(50, 50));
 
-        var sprite_sheet = Luxe.resources.texture('assets/spritesheet.png');
-        sprite_sheet.filter_min = sprite_sheet.filter_mag = FilterType.nearest;
+        player = new Player(world.getMap().getPlayerSpawn());
 
-        var item_sheet = Luxe.resources.texture('assets/items.png');
-        item_sheet.filter_min = item_sheet.filter_mag = FilterType.nearest;
-
-        var player_spawn = world.getMap().getPlayerSpawn();
-
-        player = new Player(Std.int(player_spawn.x), Std.int(player_spawn.y));
-
-        player.centerCamera();
-
-        world.setPlayer(player);
-
-        var item = new Item('Sword', Std.int(player_spawn.x) + 1, Std.int(player_spawn.y) + 1, item_sheet);
+        var item = new Item('Sword', player.location.x + 1, player.location.y + 1);
 
         hud = new HUD(Luxe.renderer);
 
@@ -112,6 +90,22 @@ class Main extends luxe.Game {
     override function onrender() {
 
         hud.updateAll();
+
+    }
+
+    function setup_controls() {
+
+        Luxe.input.bind_key('up', Key.up);
+        Luxe.input.bind_key('up', Key.key_w);
+
+        Luxe.input.bind_key('down', Key.down);
+        Luxe.input.bind_key('down', Key.key_s);
+
+        Luxe.input.bind_key('left', Key.left);
+        Luxe.input.bind_key('left', Key.key_a);
+
+        Luxe.input.bind_key('right', Key.right);
+        Luxe.input.bind_key('right', Key.key_d);
 
     }
 

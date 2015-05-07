@@ -16,11 +16,15 @@ class Player extends Entity {
     public var power : Int = 10;
     public var luck : Int = 0;
 
-    public function new(x: Int, y: Int) {
+    public function new(location: Location) {
 
-        super('Player', x, y, 0, 0);
+        super('Player', location.x, location.y, 0, 0);
+
+        centerCamera();
 
         World.getInstance().getMap().computeFOV(location.x, location.y, fov);
+
+        World.getInstance().setPlayer(this);
 
     }
 

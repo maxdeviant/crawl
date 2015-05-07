@@ -26,7 +26,7 @@ class Map {
 
     private var player_spawn : Location;
 
-    public function new(spritesheet: String, width: Int, height: Int) {
+    public function new(width: Int, height: Int) {
 
         tile_batcher = Luxe.renderer.create_batcher({
             name: 'tile',
@@ -35,7 +35,7 @@ class Map {
         });
 
         geometry = new QuadPackGeometry({
-            texture: Luxe.resources.texture(spritesheet),
+            texture: Luxe.resources.texture('assets/tileset.png'),
             batcher: tile_batcher
         });
 
