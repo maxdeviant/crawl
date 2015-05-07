@@ -18,7 +18,7 @@ class HealthBar extends HUDElement {
         health_bar = new Text({
             no_batcher_add: true,
             pos: new Vector(0, 0),
-            text: 'HP: ' + health
+            text: 'HP: $health'
         });
 
         geometry = health_bar.geometry;
@@ -27,7 +27,9 @@ class HealthBar extends HUDElement {
 
     override public function update() {
 
-        health_bar.text = 'HP: ' + World.getInstance().getPlayer().health;
+        var health : Int = World.getInstance().getPlayer().health;
+
+        health_bar.text = 'HP: $health';
 
     }
 
