@@ -1,3 +1,5 @@
+import luxe.Log.*;
+
 import luxe.Input;
 import luxe.Sprite;
 import luxe.Color;

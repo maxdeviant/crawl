@@ -1,5 +1,7 @@
 package items;
 
+import luxe.Log.*;
+
 import luxe.Sprite;
 import luxe.Vector;
 import luxe.Rectangle;

@@ -1,5 +1,7 @@
 package map;
 
+import luxe.Log.*;
+
 import luxe.Color;
 import luxe.Vector;
 import luxe.Rectangle;

@@ -1,5 +1,7 @@
 package map;
 
+import luxe.Log.*;
+
 class Tile {
 
     public var quad_id : Int;

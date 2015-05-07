@@ -1,9 +1,10 @@
 package entities;
 
+import luxe.Log.*;
+
 import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
-import luxe.Log.log;
 
 class Enemy extends Entity {
 

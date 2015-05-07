@@ -1,5 +1,7 @@
 package map;
 
+import luxe.Log.*;
+
 class Room {
 
     public var x: Int;

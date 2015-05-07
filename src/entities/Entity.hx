@@ -1,5 +1,7 @@
 package entities;
 
+import luxe.Log.*;
+
 import luxe.Sprite;
 import luxe.Rectangle;
 import luxe.Color;

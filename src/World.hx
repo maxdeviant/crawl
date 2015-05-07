@@ -1,3 +1,5 @@
+import luxe.Log.*;
+
 import map.*;
 import entities.*;
 
