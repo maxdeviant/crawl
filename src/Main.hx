@@ -3,6 +3,7 @@ import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
 import luxe.Text;
+import luxe.Log.*;
 import phoenix.Batcher;
 import phoenix.Camera;
 import phoenix.Texture;
@@ -89,15 +90,7 @@ class Main extends luxe.Game {
 
     }
 
-    override function onkeyup(event: KeyEvent) {
-
-        if (event.keycode == Key.escape) {
-            Luxe.shutdown();
-        }
-
-    }
-
-    override function update(dt: Float) {
+    override function onkeydown(event: KeyEvent) {
 
         if (Luxe.input.inputpressed('up')) {
             player.move(Direction.Up);
@@ -108,6 +101,18 @@ class Main extends luxe.Game {
         } else if (Luxe.input.inputpressed('right')) {
             player.move(Direction.Right);
         }
+
+    }
+
+    override function onkeyup(event: KeyEvent) {
+
+        if (event.keycode == Key.escape) {
+            Luxe.shutdown();
+        }
+
+    }
+
+    override function update(dt: Float) {
 
         if (Luxe.input.inputdown('character_sheet')) {
             openCharacterSheet();
