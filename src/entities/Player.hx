@@ -11,6 +11,7 @@ class Player extends Entity {
 
     public var fov : Int = 5;
 
+    public var max_health : Int = 100;
     public var health : Int = 100;
     public var power : Int = 10;
     public var luck : Int = 0;
@@ -48,19 +49,12 @@ class Player extends Entity {
             location.x += 1;
         }
 
-        sprite.pos = new Vector(location.x * SIZE, location.y * SIZE);
-
         var blocked = isBlocked();
 
         if (blocked) {
             location.x = lastX;
             location.y = lastY;
-
-            sprite.pos = new Vector(lastX * SIZE, lastY * SIZE);
         }
-
-        centerCamera();
-        World.getInstance().getMap().computeFOV(location.x, location.y, fov);
 
         var collision = isColliding();
 
@@ -68,13 +62,12 @@ class Player extends Entity {
             location.x = lastX;
             location.y = lastY;
 
-            sprite.pos = new Vector(lastX * SIZE, lastY * SIZE);
-
-            centerCamera();
-            World.getInstance().getMap().computeFOV(location.x, location.y, fov);
-
             collision.collide(this);
         }
+
+        sprite.pos = new Vector(location.x * SIZE, location.y * SIZE);
+        centerCamera();
+        World.getInstance().getMap().computeFOV(location.x, location.y, fov);
 
     }
 
@@ -110,8 +103,8 @@ class Player extends Entity {
         var entities : Array<Entity> = World.getInstance().getEntities();
 
         for (entity in entities) {
-            playerX1 = sprite.pos.x;
-            playerY1 = sprite.pos.y;
+            playerX1 = location.x * SIZE;
+            playerY1 = location.y * SIZE;
             playerX2 = playerX1 + SIZE;
             playerY2 = playerY1 + SIZE;
 
