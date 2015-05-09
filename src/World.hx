@@ -9,6 +9,8 @@ class World {
 
     private var map : Map;
 
+    private var exit : Location;
+
     private var player : Player;
     private var entities : Array<Entity>;
 
@@ -21,6 +23,26 @@ class World {
     public static function getInstance() {
 
         return instance;
+
+    }
+
+    public function reset() {
+
+        for (entity in entities) {
+            entity.sprite.destroy();
+        }
+
+        entities.splice(0, entities.length);
+
+        generateMap();
+
+        player.teleport(map.getPlayerSpawn());
+
+    }
+
+    public function generateMap() {
+
+        map = new Map(50, 50);
 
     }
 
@@ -45,6 +67,18 @@ class World {
     public function getPlayer() {
 
         return player;
+
+    }
+
+    public function setExit(exit: Location) {
+
+        this.exit = exit;
+
+    }
+
+    public function getExit() {
+
+        return exit;
 
     }
 

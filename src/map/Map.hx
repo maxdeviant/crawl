@@ -83,6 +83,8 @@ class Map {
             rooms.push(new_room);
         }
 
+        createExit(rooms[rooms.length - 1]);
+
         populate(rooms);
 
     }
@@ -378,6 +380,45 @@ class Map {
             geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
 
             tiles[x][y] = new Tile(quad, sheet_x, sheet_y, solid);
+        }
+
+    }
+
+    private function createExit(room : Room) {
+
+        var center = room.getCenter();
+
+        geometry.quad_remove(tiles[center.x][center.y].quad_id);
+
+        var map_x = center.x * TILE_WIDTH;
+        var map_y = center.y * TILE_HEIGHT;
+
+        var quad = geometry.quad_add({
+            x: map_x,
+            y: map_y,
+            w: TILE_WIDTH,
+            h: TILE_HEIGHT,
+            color: EXPLORED
+        });
+
+        var sheet_x = 2;
+        var sheet_y = 0;
+        var solid = false;
+
+        geometry.quad_uv(quad, new Rectangle(sheet_x * TILE_WIDTH, sheet_y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+
+        tiles[center.x][center.y] = new Tile(quad, sheet_x, sheet_y, solid);
+
+        World.getInstance().setExit({
+            x: center.x,
+            y: center.y
+        });
+
+        log('[MAP] Created dungeon exit at (${center.x}, ${center.y})');
+
+        return {
+            x: center.x,
+            y: center.y
         }
 
     }

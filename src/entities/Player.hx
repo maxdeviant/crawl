@@ -73,6 +73,22 @@ class Player extends Entity {
         centerCamera();
         World.getInstance().getMap().computeFOV(location.x, location.y, fov);
 
+        var exit = World.getInstance().getExit();
+
+        if (exit.x == location.x && exit.y == location.y) {
+            World.getInstance().reset();
+        }
+
+    }
+
+    public function teleport(destination: Location) {
+
+        location = destination;
+
+        sprite.pos = new Vector(location.x * SIZE, location.y * SIZE);
+        centerCamera();
+        World.getInstance().getMap().computeFOV(location.x, location.y, fov);
+
     }
 
     public function centerCamera() {

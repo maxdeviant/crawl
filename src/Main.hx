@@ -49,7 +49,7 @@ class Main extends luxe.Game {
 
         world = World.getInstance();
 
-        world.setMap(new Map(50, 50));
+        world.generateMap();
 
         player = new Player(world.getMap().getPlayerSpawn());
 
